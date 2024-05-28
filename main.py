@@ -16,20 +16,26 @@ def extract_post_requests(log_file):
 
 
 def count_requests_per_second(timestamps):
-
     time_objects = [datetime.strptime(ts, '%Y-%m-%d %H:%M:%S') for ts in timestamps]
     np_times = np.array(time_objects)
     unique_times, counts = np.unique(np_times, return_counts=True)
     return unique_times, counts
 
 
-def main():
-    log_file = './qa_ExpTester_PreInterview_Assigment.log'
+def post_request_count_per_second(log_file):
     timestamps = extract_post_requests(log_file)
     unique_times, counts = count_requests_per_second(timestamps)
-
-    print("POST Requests per second:")
+    count_array = []
     for time, count in zip(unique_times, counts):
+        count_array.append((time, count))
+    return count_array
+
+
+def main():
+    log_file = './qa_ExpTester_PreInterview_Assigment.log'
+    count_array = post_request_count_per_second(log_file)
+    print("POST Requests per second:")
+    for (time, count) in count_array:
         print(f"{time}: {count} requests")
 
 
